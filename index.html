@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login DailyConnect</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#7c3aed,#4f46e5);
+}
+
+.login-box{
+    width:400px;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+.login-box h1{
+    text-align:center;
+    color:#4f46e5;
+    margin-bottom:20px;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+}
+
+.input-group input:focus{
+    border-color:#7c3aed;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#7c3aed;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#6d28d9;
+}
+
+.info{
+    text-align:center;
+    margin-top:15px;
+    color:gray;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+
+    <h1>📱 DailyConnect</h1>
+
+    <form id="loginForm">
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" required>
+        </div>
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <div class="info">
+        Masuk untuk membagikan kegiatan harianmu.
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    localStorage.setItem("username", username);
+    localStorage.setItem("email", email);
+
+    alert("Login berhasil!");
+
+    window.location.href = "halamanutama.html";
+
+});
+
+</script>
+
+</body>
+</html>
