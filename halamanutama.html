@@ -127,35 +127,13 @@ h2{
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-orderBy,
-query
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDkn8FcbPhGIQh5i34_rl4iYeG7Zg15E1w",
-  authDomain: "dailyconnect-baedf.firebaseapp.com",
-  projectId: "dailyconnect-baedf",
-  storageBucket: "dailyconnect-baedf.firebasestorage.app",
-  messagingSenderId: "809810118454",
-  appId: "1:809810118454:web:ac222c8d211cd5dbff9597",
-  measurementId: "G-JLRPLLNZBG"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
 window.buatPostingan = async function(){
 
     const caption =
     document.getElementById("caption").value;
+
+    const file =
+    document.getElementById("foto").files[0];
 
     if(caption.trim() === ""){
         alert("Tulis kegiatan terlebih dahulu!");
@@ -165,59 +143,49 @@ window.buatPostingan = async function(){
     const username =
     localStorage.getItem("username") || "Pengguna";
 
+    let fotoUrl = "";
+
+    if(file){
+
+        const formData = new FormData();
+
+        formData.append("file", file);
+
+        formData.append(
+            "upload_preset",
+            "dailyabout5"
+        );
+
+        const response = await fetch(
+            "https://api.cloudinary.com/v1_1/dowyyyfcz/image/upload",
+            {
+                method:"POST",
+                body:formData
+            }
+        );
+
+        const data =
+        await response.json();
+
+        fotoUrl =
+        data.secure_url;
+    }
+
     await addDoc(
         collection(db,"postingan"),
         {
             username: username,
             caption: caption,
+            fotoUrl: fotoUrl,
             tanggal: new Date().toLocaleString()
         }
     );
 
     document.getElementById("caption").value="";
+    document.getElementById("foto").value="";
 
     tampilkanPostingan();
 }
-
-async function tampilkanPostingan(){
-
-    const feed =
-    document.getElementById("feed");
-
-    feed.innerHTML="";
-
-    const q = query(
-        collection(db,"postingan")
-    );
-
-    const snapshot =
-    await getDocs(q);
-
-    snapshot.forEach((doc)=>{
-
-        const post = doc.data();
-
-        feed.innerHTML += `
-        <div class="post">
-
-            <h3>👤 ${post.username}</h3>
-
-            <div class="info">
-                ${post.tanggal}
-            </div>
-
-            <p style="margin-top:10px;">
-                ${post.caption}
-            </p>
-
-        </div>
-        `;
-    });
-
-}
-
-tampilkanPostingan();
-
 </script>
 
 </body>
